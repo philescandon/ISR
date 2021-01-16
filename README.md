@@ -2,28 +2,18 @@
 > ISR functions and classes for db110 and ms110 systems
 
 
-This file will become your README and also the index of your documentation.
+This structure is an investigation of the framework for tools and using nbdev tools to create, test and document tools for lab use.
 
 ## Install
 
 `pip install isr`
 
 ## How to use
+These are all helper analysis functions.
 
-Fill me in please! Don't forget code examples:
+## db110 functions
 
-```python
-1+1
-```
-
-
-
-
-    2
-
-
-
-## db110 function
+Test the readDB110() function call from db110.py
 
 ```python
 readDB110()
@@ -35,6 +25,19 @@ readDB110()
     'DB110 Test'
 
 
+
+getFieldNames(log) will read the field names from a datalog collected from GTS
+
+```python
+fn = getFieldNames('test.log')
+```
+
+```python
+print(fn)
+```
+
+    ['row_number', 'Absolute_sample_number', 'pitchGimbal_run_curMode', 'pitchGimbal_run_curPosition', 'pitchGimbal_run_setPosition', 'pitchGimbal_run_errPosition', 'pitchGimbal_run_curVelocity', 'pitchGimbal_run_velError', 'pitchGimbal_run_setVelocity', 'pitchGimbal_run_errVelocity', 'pitchGimbal_run_curCommand']
+    
 
 ## ms110 function
 
