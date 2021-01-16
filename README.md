@@ -2,7 +2,7 @@
 > ISR functions and classes for db110 and ms110 systems
 
 
-This structure is an investigation of the framework for tools and using nbdev tools to create, test and document tools for lab use.
+This structure is an investigation of using nbdev tools to create, test and document .
 
 ## Install
 
