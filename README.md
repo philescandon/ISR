@@ -2,6 +2,11 @@
 > ISR functions and classes for db110 and ms110 systems
 
 
+```
+%load_ext_autoreload
+%autoreload 2
+```
+
 This file will become your README and also the index of your documentation.
 
 ## Install
@@ -12,7 +17,7 @@ This file will become your README and also the index of your documentation.
 
 Fill me in please! Don't forget code examples:
 
-```python
+```
 1+1
 ```
 
@@ -25,12 +30,26 @@ Fill me in please! Don't forget code examples:
 
 ## db110 function
 
-```python
+```
 readDB110()
 ```
 
-## MS110 function
 
-```python
+
+
+    'DB110 Test'
+
+
+
+## ms110 function
+
+```
 readMS110()
 ```
+
+
+
+
+    'MS110 Test0'
+
+
