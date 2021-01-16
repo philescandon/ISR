@@ -6,11 +6,10 @@ __all__ = ['getBIT_Status', 'getFieldNames']
 import pandas as pd
 import numpy as np
 import regex
-import string
 #import ipdb
 from pandas import DataFrame
 import matplotlib.pyplot as plt
-import time
+
 
 
 
