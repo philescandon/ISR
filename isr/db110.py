@@ -3,7 +3,7 @@
 __all__ = ['getBIT_Status', 'getFieldNames']
 
 # Cell
-import pandas as pd
+#import pandas as pd
 import numpy as np
 import regex
 import string
