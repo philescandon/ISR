@@ -15,17 +15,6 @@ These are all helper analysis functions.
 
 Test the readDB110() function call from db110.py
 
-```python
-readDB110()
-```
-
-
-
-
-    'DB110 Test'
-
-
-
 getFieldNames(log) will read the field names from a datalog collected from GTS
 
 ```python

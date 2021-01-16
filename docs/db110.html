@@ -53,9 +53,15 @@ nb_path: "00_db110.ipynb"
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="readDB110" class="doc_header"><code>readDB110</code><a href="https://github.com/philescandon/isr/tree/master/isr/db110.py#L18" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>readDB110</code>()</p>
+<h4 id="getBIT_Status" class="doc_header"><code>getBIT_Status</code><a href="https://github.com/philescandon/isr/tree/master/isr/db110.py#L18" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>getBIT_Status</code>(<strong><code>line</code></strong>)</p>
 </blockquote>
-<p>Simple function to test</p>
+<p>Input:
+    line = line containing a BIT status change
+Output:
+    A two element tuple containing:</p>
+
+<pre><code>    1. BIT Test represented as Component.TestName
+    2. BIT Status</code></pre>
 
 </div>
 
@@ -81,7 +87,53 @@ nb_path: "00_db110.ipynb"
 
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="k">assert</span><span class="p">(</span><span class="n">readDB110</span><span class="p">())</span> <span class="o">==</span> <span class="s1">&#39;DB110 Test&#39;</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">genBIT_Changes</span><span class="p">(</span><span class="n">fn</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Input:</span>
+<span class="sd">        fn = Name of Error Log</span>
+<span class="sd">    Output:</span>
+<span class="sd">        List where each element has 4 items:</span>
+<span class="sd">            1. Epoch time since Jan 1, 1970 (sec)</span>
+<span class="sd">            2. Event time adjusted by Time Sync (TSY) to be elapsed time (sec)</span>
+<span class="sd">            3. Name of BIT test of form: Component.TestName</span>
+<span class="sd">            4. Updated Status      </span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="n">bs_list</span> <span class="o">=</span> <span class="p">[]</span>    <span class="c1">#BIT Status Change List</span>
+    <span class="n">fh</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="n">fn</span><span class="p">,</span><span class="s1">&#39;r&#39;</span><span class="p">)</span>
+    <span class="n">syncValue</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="c1">#debug_here()</span>
+    <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">fh</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">line</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s1">&#39;TR_Rare TSY|&#39;</span><span class="p">)</span> <span class="o">!=</span> <span class="o">-</span><span class="mi">1</span><span class="p">:</span>
+            <span class="n">debug_here</span><span class="p">()</span>
+            <span class="k">if</span> <span class="n">syncValue</span> <span class="o">==</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="c1">#debug_here()</span>
+                <span class="n">syncValue</span> <span class="o">=</span> <span class="n">getTimeSync</span><span class="p">(</span><span class="n">line</span><span class="p">)</span>
+                <span class="nb">print</span> <span class="p">(</span><span class="n">syncValue</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">newSyncValue</span> <span class="o">=</span> <span class="n">getTimeSync</span><span class="p">(</span><span class="n">line</span><span class="p">)</span>
+                <span class="k">if</span> <span class="nb">abs</span><span class="p">(</span><span class="n">newSyncValue</span><span class="p">)</span><span class="o">&gt;</span><span class="mi">1000000</span><span class="p">:</span>
+                    <span class="n">syncValue</span> <span class="o">=</span> <span class="n">newSyncValue</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">syncValue</span> <span class="o">+=</span> <span class="n">newSyncValue</span>
+                    <span class="nb">print</span> <span class="p">(</span><span class="s1">&#39;new &#39;</span><span class="o">+</span><span class="n">syncValue</span><span class="p">)</span>
+
+        <span class="k">elif</span> <span class="n">line</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s1">&#39;BIT status = &#39;</span><span class="p">)</span> <span class="o">!=</span> <span class="o">-</span><span class="mi">1</span><span class="p">:</span>
+            <span class="c1">#debug_here()</span>
+            <span class="k">if</span> <span class="n">syncValue</span> <span class="o">!=</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">bitTest</span><span class="p">,</span><span class="n">bitStatus</span> <span class="o">=</span> <span class="n">getBIT_Status</span><span class="p">(</span><span class="n">line</span><span class="p">)</span>
+                <span class="n">rawTime</span> <span class="o">=</span> <span class="n">string</span><span class="o">.</span><span class="n">atoi</span><span class="p">(</span><span class="n">line</span><span class="o">.</span><span class="n">split</span><span class="p">()[</span><span class="mi">0</span><span class="p">])</span>
+                <span class="n">evtTime</span> <span class="o">=</span> <span class="n">rawTime</span><span class="o">+</span><span class="n">syncValue</span>
+                <span class="c1">#debug_here()</span>
+                <span class="k">if</span> <span class="n">bitTest</span> <span class="o">==</span> <span class="s1">&#39;SSR.CommError&#39;</span><span class="p">:</span>
+                    <span class="c1">#debug_here()</span>
+                    <span class="c1">#print bitTest    </span>
+                    <span class="c1">#debug_here()</span>
+                    <span class="n">bs_list</span><span class="o">.</span><span class="n">append</span><span class="p">([</span><span class="n">rawTime</span><span class="p">,</span><span class="n">evtTime</span><span class="p">,</span><span class="n">bitTest</span><span class="p">,</span><span class="n">bitStatus</span><span class="p">])</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">pass</span>
+        
+    <span class="n">fh</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+    <span class="k">return</span> <span class="n">bs_list</span>
 </pre></div>
 
     </div>
@@ -102,7 +154,7 @@ nb_path: "00_db110.ipynb"
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="getFieldNames" class="doc_header"><code>getFieldNames</code><a href="https://github.com/philescandon/isr/tree/master/isr/db110.py#L23" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>getFieldNames</code>(<strong><code>logfile</code></strong>)</p>
+<h4 id="getFieldNames" class="doc_header"><code>getFieldNames</code><a href="https://github.com/philescandon/isr/tree/master/isr/db110.py#L33" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>getFieldNames</code>(<strong><code>logfile</code></strong>)</p>
 </blockquote>
 <p>Returns field names from a db110 datalog collected by GTS</p>
 

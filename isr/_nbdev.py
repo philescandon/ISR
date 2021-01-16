@@ -2,7 +2,7 @@
 
 __all__ = ["index", "modules", "custom_doc_links", "git_url"]
 
-index = {"readDB110": "00_db110.ipynb",
+index = {"getBIT_Status": "00_db110.ipynb",
          "getFieldNames": "00_db110.ipynb",
          "readMS110": "01_ms110.ipynb"}
 
